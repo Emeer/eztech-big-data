@@ -28,13 +28,6 @@ import org.springframework.web.client.RestTemplate;
 @SpringApplicationConfiguration(classes = Application.class)
 @WebAppConfiguration
 @IntegrationTest({"server.port=0"})
-@TestExecutionListeners(
-		listeners = CassandraUnitTestExecutionListener.class,
-		mergeMode = MERGE_WITH_DEFAULTS
-)
-@CassandraUnit
-@CassandraDataSet
-@EmbeddedCassandra
 public class HelloControllerIT {
 
     @Value("${local.server.port}")
