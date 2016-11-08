@@ -3,4 +3,6 @@
  
  Database: elasticsearh, cassandra, neo4j
  
- Framework : spring boot, Spring cloud
+ Cache : Redis
+
+ Framework : spring boot, Spring cloud, SSO
