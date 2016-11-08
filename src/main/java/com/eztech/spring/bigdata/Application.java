@@ -1,6 +1,5 @@
 package com.eztech.spring.bigdata;
 
-import com.eztech.spring.bigdata.config.HadoopConfig;
 import com.eztech.spring.bigdata.config.RedisCacheConfiguration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -12,7 +11,7 @@ import org.springframework.context.annotation.Import;
  * @author Jia ZHOU
  */
 @SpringBootApplication
-@Import({HadoopConfig.class, RedisCacheConfiguration.class})
+@Import({RedisCacheConfiguration.class})
 public class Application {
 
     /**
