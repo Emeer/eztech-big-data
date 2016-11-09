@@ -12,19 +12,27 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 
+/**
+ * The Redis cache configuration.
+ */
 @Configuration
 @EnableCaching
 @ComponentScan("com.eztech.spring.bigdata.controller")
 public class RedisCacheConfiguration extends CachingConfigurerSupport {
-
-    private
+    /** The redis host. */
     @Value("${spring.redis.host}")
-    String redisHost;
-    private
+    private String redisHost;
+
+    /** The redis port. */
     @Value("${spring.redis.port}")
-    int redisPort;
+    private int redisPort;
 
 
+    /**
+     * Redis connection factory jedis connection factory.
+     *
+     * @return the jedis connection factory
+     */
     @Bean
     public JedisConnectionFactory redisConnectionFactory() {
         JedisConnectionFactory redisConnectionFactory = new JedisConnectionFactory();
@@ -35,6 +43,12 @@ public class RedisCacheConfiguration extends CachingConfigurerSupport {
         return redisConnectionFactory;
     }
 
+    /**
+     * Redis template redis template.
+     *
+     * @param cf the cf
+     * @return the redis template
+     */
     @Bean
     public RedisTemplate<Object, Object> redisTemplate(RedisConnectionFactory cf) {
         RedisTemplate<Object, Object> redisTemplate = new RedisTemplate<Object, Object>();
@@ -42,6 +56,12 @@ public class RedisCacheConfiguration extends CachingConfigurerSupport {
         return redisTemplate;
     }
 
+    /**
+     * Cache manager cache manager.
+     *
+     * @param redisTemplate the redis template
+     * @return the cache manager
+     */
     @Bean
     public CacheManager cacheManager(RedisTemplate redisTemplate) {
         RedisCacheManager cacheManager = new RedisCacheManager(redisTemplate);
