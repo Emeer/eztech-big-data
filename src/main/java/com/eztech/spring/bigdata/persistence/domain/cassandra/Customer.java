@@ -23,13 +23,7 @@ public class Customer extends AbstractCassandraEntity<UUID> {
     public Customer() {
     }
 
-    /**
-     * Instantiates a new Customer.
-     *
-     * @param id        the id
-     * @param firstName the first name
-     * @param lastName  the last name
-     */
+
     public Customer(UUID id, String firstName, String lastName) {
         setId(id);
         this.firstName = firstName;

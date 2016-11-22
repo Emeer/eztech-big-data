@@ -70,3 +70,8 @@ public class RedisCacheConfiguration extends CachingConfigurerSupport {
         return cacheManager;
     }
 }
+
+
+
+
+

@@ -46,6 +46,7 @@ public abstract class AbstractCassandraEntity<I extends Serializable> implements
     }
 
     /**
+     * @param obj
      * {@inheritDoc}
      */
     @Override
@@ -72,3 +73,8 @@ public abstract class AbstractCassandraEntity<I extends Serializable> implements
         return MoreObjects.toStringHelper(this).addValue(this.id).toString();
     }
 }
+
+
+
+
+

@@ -7,6 +7,9 @@ import org.springframework.data.annotation.Id;
 import java.io.Serializable;
 
 
+/**
+ * 
+ */
 public abstract class AbstractRedisEntity<I extends Serializable> implements Entity<I> {
 
     /** The serial version UID. */
@@ -42,6 +45,7 @@ public abstract class AbstractRedisEntity<I extends Serializable> implements Ent
     }
 
     /**
+     * @param obj
      * {@inheritDoc}
      */
     @Override
@@ -68,3 +72,8 @@ public abstract class AbstractRedisEntity<I extends Serializable> implements Ent
         return MoreObjects.toStringHelper(this).addValue(this.id).toString();
     }
 }
+
+
+
+
+

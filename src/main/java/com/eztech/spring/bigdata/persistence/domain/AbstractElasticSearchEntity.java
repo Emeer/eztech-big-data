@@ -46,6 +46,7 @@ public abstract class AbstractElasticSearchEntity<I extends Serializable> implem
     }
 
     /**
+     * @param obj
      * {@inheritDoc}
      */
     @Override
@@ -72,3 +73,8 @@ public abstract class AbstractElasticSearchEntity<I extends Serializable> implem
         return MoreObjects.toStringHelper(this).addValue(this.id).toString();
     }
 }
+
+
+
+
+
