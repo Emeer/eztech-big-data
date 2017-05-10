@@ -3,6 +3,8 @@ package com.eztech.spring.bigdata.controller.cassandra;
 import com.eztech.spring.bigdata.persistence.domain.cassandra.Customer;
 import com.eztech.spring.bigdata.service.cassandra.CustomerCassandraService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,12 +22,14 @@ public class CustomerCassandraController {
 
 
     @RequestMapping(path = "/customer/{id}", method = RequestMethod.GET)
+    @Cacheable(value = "user", key = "#id")
     public Customer findById(@PathVariable UUID id) {
         return customerCassandraService.findOne(id);
     }
 
 
     @RequestMapping(path = "customer/create", method = RequestMethod.POST)
+    @CachePut(value = "user", key = "#customer.id")
     public Customer save(@RequestBody Customer customer) {
         customer.setId(UUID.randomUUID());
         return customerCassandraService.save(customer);
