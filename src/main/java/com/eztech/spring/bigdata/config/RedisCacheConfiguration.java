@@ -19,6 +19,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 @EnableCaching
 @ComponentScan("com.eztech.spring.bigdata.controller")
 public class RedisCacheConfiguration extends CachingConfigurerSupport {
+
     /** The redis host. */
     @Value("${spring.redis.host}")
     private String redisHost;

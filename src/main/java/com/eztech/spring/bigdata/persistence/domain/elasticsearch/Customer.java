@@ -1,78 +1,37 @@
 package com.eztech.spring.bigdata.persistence.domain.elasticsearch;
 
 import com.eztech.spring.bigdata.persistence.domain.AbstractElasticSearchEntity;
-import com.google.common.base.MoreObjects;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.elasticsearch.annotations.Document;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * The type Customer.
  */
+@Data
+@NoArgsConstructor
 @Document(indexName = "customer", type = "customer", shards = 1, replicas = 0, refreshInterval = "-1")
 public class Customer extends AbstractElasticSearchEntity<String> {
 
 
-
     private String firstName;
+
 
     private String lastName;
 
-    /**
-     * Instantiates a new Customer.
-     */
-    public Customer() {
-    }
 
-    /**
-     * Instantiates a new Customer.
-     *
-     * @param firstName the first name
-     * @param lastName  the last name
-     */
-    public Customer(String firstName, String lastName) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-    }
+    private Set<String> emails;
 
 
-    /**
-     * Gets first name.
-     *
-     * @return the first name
-     */
-    public String getFirstName() {
-        return this.firstName;
-    }
+    private List<Integer> topScores;
 
-    /**
-     * Sets first name.
-     *
-     * @param firstName the first name
-     */
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
 
-    /**
-     * Gets last name.
-     *
-     * @return the last name
-     */
-    public String getLastName() {
-        return this.lastName;
-    }
+    private Map<Date, String> todo;
 
-    /**
-     * Sets last name.
-     *
-     * @param lastName the last name
-     */
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    @Override
-    public String toString() {
-        return MoreObjects.toStringHelper(this).addValue(getId()).addValue(this.firstName).addValue(this.lastName).toString();
-    }
 
 }

@@ -8,8 +8,4 @@ import java.util.List;
 
 public interface CustomerESRepository extends ElasticsearchRepository<Customer, String> {
 
-    public Customer findByFirstName(String firstName);
-
-    public List<Customer> findByLastName(String lastName);
-
 }

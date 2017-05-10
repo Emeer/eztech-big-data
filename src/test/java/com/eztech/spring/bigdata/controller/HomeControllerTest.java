@@ -1,4 +1,4 @@
-package com.eztech.spring.bigdata;
+package com.eztech.spring.bigdata.controller;
 
 import com.eztech.spring.bigdata.controller.HomeController;
 import org.junit.Before;

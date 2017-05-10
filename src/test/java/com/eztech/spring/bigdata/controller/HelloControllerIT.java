@@ -1,4 +1,4 @@
-package com.eztech.spring.bigdata;
+package com.eztech.spring.bigdata.controller;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
