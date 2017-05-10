@@ -2,8 +2,11 @@ package com.eztech.spring.bigdata;
 
 import com.eztech.spring.bigdata.config.RedisCacheConfiguration;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.cassandra.repository.config.EnableCassandraRepositories;
+import org.springframework.data.cassandra.repository.support.CassandraRepositoryFactoryBean;
 
 /**
  * Spring Big data Application
@@ -11,6 +14,7 @@ import org.springframework.context.annotation.Import;
  * @author Jia ZHOU
  */
 @SpringBootApplication
+@EnableAutoConfiguration
 @Import({RedisCacheConfiguration.class})
 public class Application {
 

@@ -1,38 +1,40 @@
 package com.eztech.spring.bigdata.persistence.domain.cassandra;
 
 import com.eztech.spring.bigdata.persistence.domain.AbstractCassandraEntity;
-import com.google.common.base.MoreObjects;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.data.cassandra.mapping.Column;
 import org.springframework.data.cassandra.mapping.Table;
 
-import java.util.UUID;
+import java.util.*;
 
 /**
  * The type Customer.
  */
-@Table
+@Data
+@NoArgsConstructor
+@Table("customer")
 public class Customer extends AbstractCassandraEntity<UUID> {
 
 
+    @Column("first_name")
     private String firstName;
 
+
+    @Column("last_name")
     private String lastName;
 
-    /**
-     * Instantiates a new Customer.
-     */
-    public Customer() {
-    }
+
+    @Column("emails")
+    private Set<String> emails;
 
 
-    public Customer(UUID id, String firstName, String lastName) {
-        setId(id);
-        this.firstName = firstName;
-        this.lastName = lastName;
-    }
+    @Column("top_scores")
+    private List<Integer> topScores;
 
-    @Override
-    public String toString() {
-        return MoreObjects.toStringHelper(this).addValue(getId()).addValue(this.firstName).addValue(this.lastName).toString();
-    }
+
+    @Column("todo")
+    private Map<Date, String> todo;
+
 
 }
