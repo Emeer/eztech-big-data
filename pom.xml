@@ -73,6 +73,12 @@
             <version>18.0</version>
         </dependency>
 
+        <!-- Spring boot -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot</artifactId>
+        </dependency>
+
         <!-- Spring support for Elastic Search -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -125,15 +131,7 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot</artifactId>
-            <version>RELEASE</version>
-        </dependency>
+
         <!-- end::tests[] -->
     </dependencies>
 
