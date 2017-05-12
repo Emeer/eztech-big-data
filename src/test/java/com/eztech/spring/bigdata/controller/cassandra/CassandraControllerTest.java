@@ -1,8 +1,14 @@
 package com.eztech.spring.bigdata.controller.cassandra;
 
-import com.datastax.driver.core.Cluster;
-import com.datastax.driver.core.ResultSet;
-import com.datastax.driver.core.Session;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.util.Date;
+import java.util.UUID;
+
 import com.eztech.spring.bigdata.persistence.domain.cassandra.Customer;
 import com.eztech.spring.bigdata.service.cassandra.CustomerCassandraService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -26,21 +32,13 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.util.Date;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-
-@RunWith(SpringJUnit4ClassRunner.class)
 @TestExecutionListeners(listeners = {CassandraUnitDependencyInjectionTestExecutionListener.class})
 @CassandraDataSet(value = {"simple.cql"})
 @CassandraUnit
+@RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
 public class CassandraControllerTest {
 
-    private Session session;
 
     private MockMvc mvc;
 
@@ -50,49 +48,55 @@ public class CassandraControllerTest {
     @Mock
     private CustomerCassandraService customerCassandraService;
 
+    private Customer customer;
+
+
     @Before
     public void setUp() {
-        Cluster cluster = Cluster.builder()
-                .addContactPoints("127.0.0.1")
-                .withPort(9142)
-                .build();
-
-        session = cluster.connect("cassandra_unit_keyspace");
         MockitoAnnotations.initMocks(this);
         mvc = MockMvcBuilders.standaloneSetup(customerCassandraController).build();
-    }
 
-
-    @Test
-    public void should_have_started_and_execute_cql_script() throws Exception {
-        ResultSet result = session.execute("select * from customer WHERE emails contains 'test@hotmail.com' ALLOW FILTERING");
-        assertThat(result.iterator().next().getString("last_name"), is("zhou"));
-    }
-
-
-    @Test
-    public void createCustomer() throws Exception {
-        Customer customer = new Customer();
+        customer = new Customer();
+        customer.setId(UUID.randomUUID());
         customer.setFirstName("jia");
         customer.setLastName("zhou");
         customer.setEmails(Sets.newHashSet("test1@gmail.com", "test2@hotmail.com"));
         customer.setTopScores(Lists.newArrayList(1, 2, 3));
         customer.setTodo(Maps.newHashMap(new Date(), "today"));
+    }
+
+
+    @Test
+    public void createCustomer() throws Exception {
         ObjectMapper mapper = new ObjectMapper();
         String content = mapper.writeValueAsString(customer);
+        when(customerCassandraService.save(customer)).thenReturn(customer);
         mvc.perform(MockMvcRequestBuilders.post("/cassandra/customer/create").content(content)
                 .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
                 .accept(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(status().isOk());
+        verify(customerCassandraService, times(1)).save(customer);
+    }
+
+
+    @Test
+    public void findById() throws Exception {
+        when(customerCassandraService.findOne(any())).thenReturn(customer);
+        mvc.perform(MockMvcRequestBuilders.get("/cassandra/customer/" + UUID.randomUUID().toString())
+                .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
+                .accept(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(status().isOk());
+        verify(customerCassandraService, times(1)).findOne(any());
     }
 
 
     @Test
     public void findByFirstName() throws Exception {
+        when(customerCassandraService.findByFirstName(any())).thenReturn(Lists.newArrayList(customer));
         mvc.perform(MockMvcRequestBuilders.get("/cassandra/customer/first_name/eric")
                 .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
                 .accept(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(status().isOk());
-        //.andExpect(jsonPath("$.customer.last_name", is("zhou")))
+        verify(customerCassandraService, times(1)).findByFirstName(any());
     }
 }
