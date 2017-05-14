@@ -16,8 +16,8 @@ import org.springframework.data.elasticsearch.repository.config.EnableElasticsea
  */
 @SpringBootApplication
 @EnableAutoConfiguration
-@EnableElasticsearchRepositories
-@EnableCassandraRepositories
+@EnableCassandraRepositories(basePackages = "com.eztech.spring.bigdata.persistence.repository.cassandra")
+@EnableElasticsearchRepositories(basePackages = "com.eztech.spring.bigdata.persistence.repository.elasticsearch")
 @Import({RedisCacheConfiguration.class})
 public class Application {
 

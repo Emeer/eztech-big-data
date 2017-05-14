@@ -35,7 +35,6 @@ public class CustomerESService implements ESBasicService<Customer, String> {
     @Override
     public void delete(Customer customer) {
         repository.delete(customer);
-
     }
 
     @Override
