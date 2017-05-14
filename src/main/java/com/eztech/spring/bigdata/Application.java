@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.cassandra.repository.config.EnableCassandraRepositories;
 import org.springframework.data.cassandra.repository.support.CassandraRepositoryFactoryBean;
+import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
 
 /**
  * Spring Big data Application
@@ -15,6 +16,8 @@ import org.springframework.data.cassandra.repository.support.CassandraRepository
  */
 @SpringBootApplication
 @EnableAutoConfiguration
+@EnableElasticsearchRepositories
+@EnableCassandraRepositories
 @Import({RedisCacheConfiguration.class})
 public class Application {
 
