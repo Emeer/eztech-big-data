@@ -30,13 +30,13 @@ public class CustomerCassandraController {
 
 
     @RequestMapping(path = "/customer/create", method = RequestMethod.POST)
-    @CachePut(value = "user", key = "#customer.id")
+    @CachePut(value = "user", key = "#customer.getId()")
     public Customer save(@RequestBody Customer customer) {
-        customer.setId(UUID.randomUUID());
         return customerCassandraService.save(customer);
     }
 
     @RequestMapping(path = "/customer/first_name/{name}", method = RequestMethod.GET)
+    @Cacheable(value = "user", key = "#name")
     public List<Customer> findByFirstName(@PathVariable String name) {
         return customerCassandraService.findByFirstName(name);
     }

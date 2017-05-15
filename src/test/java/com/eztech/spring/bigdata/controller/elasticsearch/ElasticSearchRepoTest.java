@@ -1,11 +1,6 @@
 package com.eztech.spring.bigdata.controller.elasticsearch;
 
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
-
-import java.util.UUID;
-
 import com.eztech.spring.bigdata.persistence.domain.elasticsearch.Customer;
 import com.eztech.spring.bigdata.persistence.repository.elasticsearch.CustomerESRepository;
 import com.google.common.collect.Sets;
@@ -15,6 +10,11 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import java.util.UUID;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = ElasticsearchTestConfig.class)

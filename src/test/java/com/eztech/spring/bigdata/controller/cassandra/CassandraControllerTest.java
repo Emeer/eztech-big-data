@@ -1,14 +1,5 @@
 package com.eztech.spring.bigdata.controller.cassandra;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import java.util.Date;
-import java.util.UUID;
-
 import com.eztech.spring.bigdata.persistence.domain.cassandra.Customer;
 import com.eztech.spring.bigdata.service.cassandra.CustomerCassandraService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -25,17 +16,31 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.cache.Cache;
+import org.springframework.data.redis.cache.RedisCacheManager;
+import org.springframework.data.redis.connection.RedisConnection;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.TestExecutionListeners;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.util.Date;
+import java.util.UUID;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 @TestExecutionListeners(listeners = {CassandraUnitDependencyInjectionTestExecutionListener.class})
 @CassandraDataSet(value = {"simple.cql"})
 @CassandraUnit
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(SpringRunner.class)
 @SpringBootTest
 public class CassandraControllerTest {
 
@@ -50,11 +55,30 @@ public class CassandraControllerTest {
 
     private Customer customer;
 
+    @Mock
+    private RedisConnection redisConnectionMock;
+
+    @Mock
+    private RedisConnectionFactory redisConnectionFactoryMock;
+
+    private RedisTemplate redisTemplate;
+
+    private RedisCacheManager cacheManager;
+
 
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
         mvc = MockMvcBuilders.standaloneSetup(customerCassandraController).build();
+
+        when(redisConnectionFactoryMock.getConnection()).thenReturn(redisConnectionMock);
+
+        redisTemplate = new RedisTemplate();
+        redisTemplate.setConnectionFactory(redisConnectionFactoryMock);
+        redisTemplate.afterPropertiesSet();
+
+        cacheManager = new RedisCacheManager(redisTemplate);
+        cacheManager.afterPropertiesSet();
 
         customer = new Customer();
         customer.setId(UUID.randomUUID());
@@ -76,17 +100,22 @@ public class CassandraControllerTest {
                 .accept(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(status().isOk());
         verify(customerCassandraService, times(1)).save(customer);
+        Cache.ValueWrapper cache = cacheManager.getCache("user").get(customer.getId());
+        assertThat(cache.get(), is(customer));
     }
 
 
     @Test
     public void findById() throws Exception {
         when(customerCassandraService.findOne(any())).thenReturn(customer);
-        mvc.perform(MockMvcRequestBuilders.get("/cassandra/customer/" + UUID.randomUUID().toString())
+        String id = UUID.randomUUID().toString();
+        mvc.perform(MockMvcRequestBuilders.get("/cassandra/customer/" + id)
                 .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
                 .accept(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(status().isOk());
         verify(customerCassandraService, times(1)).findOne(any());
+        Cache.ValueWrapper cache = cacheManager.getCache("user").get(customer);
+        assertThat(cache.get(), is(customer));
     }
 
 
