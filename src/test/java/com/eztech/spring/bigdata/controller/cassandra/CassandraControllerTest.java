@@ -1,5 +1,17 @@
 package com.eztech.spring.bigdata.controller.cassandra;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.util.Arrays;
+import java.util.Date;
+import java.util.UUID;
+
 import com.eztech.spring.bigdata.persistence.domain.cassandra.Customer;
 import com.eztech.spring.bigdata.service.cassandra.CustomerCassandraService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -27,15 +39,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-
-import java.util.Date;
-import java.util.UUID;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @TestExecutionListeners(listeners = {CassandraUnitDependencyInjectionTestExecutionListener.class})
 @CassandraDataSet(value = {"simple.cql"})
@@ -78,6 +81,7 @@ public class CassandraControllerTest {
         redisTemplate.afterPropertiesSet();
 
         cacheManager = new RedisCacheManager(redisTemplate);
+        cacheManager.setCacheNames(Arrays.asList("user"));
         cacheManager.afterPropertiesSet();
 
         customer = new Customer();
@@ -100,8 +104,8 @@ public class CassandraControllerTest {
                 .accept(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(status().isOk());
         verify(customerCassandraService, times(1)).save(customer);
-        Cache.ValueWrapper cache = cacheManager.getCache("user").get(customer.getId());
-        assertThat(cache.get(), is(customer));
+        Customer cache = cacheManager.getCache("user").get(customer.getId(), Customer.class);
+        assertThat(cache, is(customer));
     }
 
 
