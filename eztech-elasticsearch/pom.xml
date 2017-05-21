@@ -9,7 +9,7 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>eztech-elasticsearh</artifactId>
+    <artifactId>eztech-elasticsearch</artifactId>
     <name>EZTech Cloud:: Elasticsearch Server</name>
     <packaging>jar</packaging>
     <version>1.0-SNAPSHOT</version>
