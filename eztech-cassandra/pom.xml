@@ -74,13 +74,6 @@
             <artifactId>spring-boot</artifactId>
         </dependency>
 
-        <!-- Spring support for Elastic Search -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
-        </dependency>
-
-
         <!-- Spring support for Cassandra -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
