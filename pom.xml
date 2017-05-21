@@ -5,6 +5,7 @@
 
     <groupId>com.eztech</groupId>
     <artifactId>eztech-big-data</artifactId>
+    <packaging>pom</packaging>
     <version>0.1-SNAPSHOT</version>
 
     <modules>
@@ -31,6 +32,38 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+
+            <!-- self dependencies -->
+            <dependency>
+                <groupId>com.eztech</groupId>
+                <artifactId>eztech-cassandra</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.eztech</groupId>
+                <artifactId>eztech-config</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.eztech</groupId>
+                <artifactId>eztech-elasticsearch</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.eztech</groupId>
+                <artifactId>eztech-eureka</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.eztech</groupId>
+                <artifactId>eztech-hystrix</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
