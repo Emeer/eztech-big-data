@@ -3,6 +3,7 @@ package com.eztech.spring.bigdata.service.cassandra;
 import com.eztech.spring.bigdata.persistence.domain.cassandra.Customer;
 import com.eztech.spring.bigdata.persistence.repository.cassandra.CustomerCassandraRepository;
 import com.eztech.spring.bigdata.service.BasicService;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -70,11 +71,10 @@ public class CustomerCassandraService implements BasicService<Customer, UUID> {
         return repository.findAll();
     }
 
-
+    @HystrixCommand(fallbackMethod = "findByFirstName")
     public List<Customer> findByFirstName(String name) {
         return repository.findByFirstName(name);
     }
-
 
     public List<Customer> findByLastName(String name) {
         return repository.findByLastName(name);

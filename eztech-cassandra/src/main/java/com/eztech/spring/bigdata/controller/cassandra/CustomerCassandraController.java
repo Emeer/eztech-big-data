@@ -36,7 +36,6 @@ public class CustomerCassandraController {
     }
 
     @RequestMapping(path = "/customer/first_name/{name}", method = RequestMethod.GET)
-    @Cacheable(value = "user", key = "#name")
     public List<Customer> findByFirstName(@PathVariable String name) {
         return customerCassandraService.findByFirstName(name);
     }

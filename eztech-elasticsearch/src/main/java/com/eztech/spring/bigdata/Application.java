@@ -4,7 +4,8 @@ import com.eztech.spring.bigdata.config.RedisCacheConfiguration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
 
@@ -14,6 +15,8 @@ import org.springframework.data.elasticsearch.repository.config.EnableElasticsea
  * @author Jia ZHOU
  */
 @SpringBootApplication
+@EnableDiscoveryClient
+@EnableCircuitBreaker
 @EnableAutoConfiguration
 @EnableElasticsearchRepositories(basePackages = "com.eztech.spring.bigdata.persistence.repository.elasticsearch")
 @Import({RedisCacheConfiguration.class})
