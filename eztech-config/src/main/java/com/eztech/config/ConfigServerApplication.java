@@ -1,4 +1,4 @@
-package com.eztech.net.cokey.config;
+package com.eztech.config;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

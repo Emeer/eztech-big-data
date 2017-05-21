@@ -1,4 +1,4 @@
-package com.eztech.net.cokey.hystrix;
+package com.eztech.hystrix;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
