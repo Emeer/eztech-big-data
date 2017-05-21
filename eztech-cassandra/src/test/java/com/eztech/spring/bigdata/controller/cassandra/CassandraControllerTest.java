@@ -58,31 +58,11 @@ public class CassandraControllerTest {
 
     private Customer customer;
 
-    @Mock
-    private RedisConnection redisConnectionMock;
-
-    @Mock
-    private RedisConnectionFactory redisConnectionFactoryMock;
-
-    private RedisTemplate redisTemplate;
-
-    private RedisCacheManager cacheManager;
-
 
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
         mvc = MockMvcBuilders.standaloneSetup(customerCassandraController).build();
-
-        when(redisConnectionFactoryMock.getConnection()).thenReturn(redisConnectionMock);
-
-        redisTemplate = new RedisTemplate();
-        redisTemplate.setConnectionFactory(redisConnectionFactoryMock);
-        redisTemplate.afterPropertiesSet();
-
-        cacheManager = new RedisCacheManager(redisTemplate);
-        cacheManager.setCacheNames(Arrays.asList("user"));
-        cacheManager.afterPropertiesSet();
 
         customer = new Customer();
         customer.setId(UUID.randomUUID());
@@ -104,8 +84,6 @@ public class CassandraControllerTest {
                 .accept(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(status().isOk());
         verify(customerCassandraService, times(1)).save(customer);
-        Customer cache = cacheManager.getCache("user").get(customer.getId(), Customer.class);
-        assertThat(cache, is(customer));
     }
 
 
@@ -118,8 +96,6 @@ public class CassandraControllerTest {
                 .accept(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(status().isOk());
         verify(customerCassandraService, times(1)).findOne(any());
-        Cache.ValueWrapper cache = cacheManager.getCache("user").get(customer);
-        assertThat(cache.get(), is(customer));
     }
 
 
