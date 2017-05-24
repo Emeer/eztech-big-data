@@ -9,7 +9,7 @@
     </parent>
 
     <artifactId>eztech-eureka</artifactId>
-    <name>EZTech Cloud:: cassandra Server</name>
+    <name>EZTech Cloud:: eureka Server</name>
     <packaging>jar</packaging>
     <version>1.0-SNAPSHOT</version>
 
